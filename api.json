@@ -1,0 +1,103 @@
+// Company
+{
+  "operationName": "addCompanies",
+  "variables": {
+    "companyInputs": [
+      {
+        "code": "string",                    // 회사 코드
+        "location": [
+          {
+            "postalCode": "string",          // 우편번호
+            "prefecture": "string",          // 도도부현
+            "address": "string",             // 주소
+            "roomLocation": {
+              "building": "string",          // 건물명
+              "roomNo": "string"             // 방 번호
+            }
+          }
+        ],
+        "telephoneNo": [
+          {
+            "number": "string",              // 전화번호
+            "type": "MOBILE",                // 전화 타입
+            "isPrimary": true                // 기본 전화번호 여부
+          }
+        ],
+        "contactPersonFamilyName": "string", // 담당자 성
+        "mailto:contactpersonmail": "string", // 담당자 이메일
+        "mainHrAdmin": "string",             // 메인 HR 관리자
+        "medicalCheckupStartDate": "string", // 건강검진 시작일
+        "medicalCheckupEndDate": "string",   // 건강검진 종료일
+        "offices": [],                       // 사무소 목록 (빈 배열)
+        "departments": [],                   // 부서 목록 (빈 배열)
+        "displayNameMap": {
+          "en": "string",                    // 영어 회사명
+          "ja": "string"                     // 일본어 회사명
+        },
+        "designations": [],                  // 직책 목록 (빈 배열)
+        "status": "ACTIVE"                   // 상태
+      }
+    ]
+  }
+}
+
+// Office
+{
+  "operationName": "addOffices",
+  "variables": {
+    "officeInputs": [
+      {
+        "code": "string",                    // 사무소 코드
+        "shortcode": "string",               // 사무소 단축 코드
+        "displayNameMap": {
+          "en": "string",                    // 영어 사무소명
+          "ja": "string"                     // 일본어 사무소명
+        },
+        "physicianList": [],                 // 의사 목록 (빈 배열)
+        "assignedDepartments": [             // 할당된 부서 목록
+          "string"                           // 부서 ID
+        ],
+        "status": "ACTIVE"                   // 상태
+      }
+    ]
+  }
+}
+
+// Department
+{
+  "operationName": "addDepartments",
+  "variables": {
+    "departmentInputs": [
+      {
+        "code": "string",                    // 부서 코드
+        "shortcode": "string",               // 부서 단축 코드
+        "displayNameMap": {
+          "en": "string",                    // 영어 부서명
+          "ja": "string"                     // 일본어 부서명
+        },
+        "divisions": [],                     // 부문 목록 (빈 배열)
+        "status": "ACTIVE"                   // 상태
+      }
+    ]
+  }
+}
+
+// Division
+{
+  "operationName": "addDivisions",
+  "variables": {
+    "divisionInputs": [
+      {
+        "code": "string",                    // 부문 코드
+        "shortcode": "string",               // 부문 단축 코드
+        "displayNameMap": {
+          "en": "string",                    // 영어 부문명
+          "ja": "string"                     // 일본어 부문명
+        },
+        "status": "ACTIVE",                  // 상태
+        "departmentCode": "string"           // 소속 부서 코드
+      }
+    ]
+  }
+}
+

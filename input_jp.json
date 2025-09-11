@@ -1,0 +1,47 @@
+{
+    "operationName": "addFullCompanySetup",
+    "variables": {
+        "companyInfo": {
+            "companyName": "string", // 企業名（必須）
+            "companyNameKana": "string", // 企業名（カナ）（必須）
+            "companyCode": "string", // 企業コード（必須）
+            "contactPersonLastName": "string", // 担当者姓（必須）
+            "contactPersonFirstName": "string", // 担当者名（必須）
+            "contactPersonLastNameKana": "string", // 担当者姓（カナ）（必須）
+            "contactPersonFirstNameKana": "string", // 担当者名（カナ）（必須）
+            "phoneNumber": "string", // 電話番号（必須）
+            "postalCode": "string", // 郵便番号（必須）
+            "prefecture": "string", // 都道府県（必須・選択）
+            "city": "string", // 市区町村（必須）
+            "address": "string", // 番地（必須）
+            "buildingName": "string", // 建物名・部屋番号（任意）
+            "fiscalYearStart": "string", // 会計年度開始月（必須・選択）
+            "fiscalYearEnd": "string" // 会計年度終了月（必須・選択）
+        },
+        "ownerLoginInfo": {
+            "loginEmail": "string", // ログインID（メールアドレス）（必須）
+            "password": "string" // パスワード（必須）
+        },
+        "optionSelection": {
+            "appIntegration": "string", // アプリ連携（必須・ラジオ：あり／なし）
+            "safetyConfirmation": "string", // 安否確認（必須・ラジオ：あり／なし）
+            "occupationalHealthIntegration": "string" // 産業医連携（必須・ラジオ：あり／なし）
+        },
+        "occupationalDoctorInfo": {
+            "occupationalDoctorCount": "number", // 産業医の人数（必須・選択：1名〜20名）
+            "occupationalDoctors": [
+                // 産業医の詳細情報（動的配列）
+                {
+                    "name": "string", // 産業医名（必須）
+                    "nameKana": "string", // 産業医名（カナ）（必須）
+                    "phone": "string", // 電話番号（必須）
+                    "responsibleOffice": "string", // 担当事業所（必須・選択）
+                    "officeCode": [
+                        // 事業所コード（必須・複数選択）
+                        "string"
+                    ]
+                }
+            ]
+        }
+    }
+}
