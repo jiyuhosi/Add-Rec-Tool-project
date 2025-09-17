@@ -76,3 +76,17 @@ pids/
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
+.venv/
+venv/
+env/
+
+# macOS
+.DS_Store
