@@ -1,20 +1,3 @@
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { useForm } from 'react-hook-form';
-
-// ...existing imports
-
-const MyFormComponent = () => {
-    const form = useForm({
-        // ...existing form setup
-    });
-
-    return (
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-            {/* ...existing form fields */}
-
-            {/* Add employee chat display option when app integration is 'yes' */}
 import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import {
@@ -35,7 +18,7 @@ export const OptionSection: React.FC<OptionSectionProps> = ({ form }) => {
     return (
         <div>
             {/* Existing option fields */}
-            
+
             {/* Employee chat display - show when app integration is 'yes' */}
             {form.watch('appIntegration') === 'yes' && (
                 <FormField
@@ -54,7 +37,9 @@ export const OptionSection: React.FC<OptionSectionProps> = ({ form }) => {
                                             type="radio"
                                             value="show"
                                             checked={field.value === 'show'}
-                                            onChange={() => field.onChange('show')}
+                                            onChange={() =>
+                                                field.onChange('show')
+                                            }
                                             className="w-4 h-4"
                                         />
                                         <span className="text-sm">
@@ -66,7 +51,9 @@ export const OptionSection: React.FC<OptionSectionProps> = ({ form }) => {
                                             type="radio"
                                             value="hide"
                                             checked={field.value === 'hide'}
-                                            onChange={() => field.onChange('hide')}
+                                            onChange={() =>
+                                                field.onChange('hide')
+                                            }
                                             className="w-4 h-4"
                                         />
                                         <span className="text-sm">
@@ -82,11 +69,4 @@ export const OptionSection: React.FC<OptionSectionProps> = ({ form }) => {
             )}
         </div>
     );
-};            <button type="submit" className="btn-primary">
-                Submit
-            </button>
-        </form>
-    );
 };
-
-export default MyFormComponent;

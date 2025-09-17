@@ -13,8 +13,6 @@ import {
     CompanyInfo,
     OwnerLoginInfo,
     Option,
-    OccupationalDoctorInfo,
-    DoctorLoginInfo,
     EmployeeChatOptions,
 } from '@/components/company';
 
