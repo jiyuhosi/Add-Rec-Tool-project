@@ -8,6 +8,7 @@ import {
     type CompanyFormData,
     defaultCompanyFormValues,
 } from '@/schemas/companySchema';
+import { toApiCompanyPayload } from '@/lib/companyMapper';
 import { COMPANY_LABEL } from '@/constants/companyLabels';
 import {
     CompanyInfo,
@@ -24,8 +25,22 @@ const CompanyPage: React.FC = () => {
 
     const onSubmit = async (data: CompanyFormData) => {
         try {
-            console.log('Company registration data:', data);
-            // TODO: Submit to API
+            const payload = toApiCompanyPayload(data, {
+                addressMode: 'location',
+                fiscalKey: 'fiscalYearEndMonth',
+            });
+
+            const res = await fetch('http://localhost:8000/company', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            if (!res.ok) {
+                const text = await res.text();
+                throw new Error(`HTTP ${res.status}: ${text}`);
+            }
+
             alert('Company registered successfully!');
         } catch (error) {
             console.error('Registration failed:', error);
