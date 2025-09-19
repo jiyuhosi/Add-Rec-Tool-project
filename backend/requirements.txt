@@ -3,3 +3,11 @@ uvicorn[standard]
 pydantic
 python-multipart
 email-validator
+PyJWT[crypto]
+pytest
+# MongoDB ODM/driver
+beanie
+motor
+python-dotenv
+regex
+passlib[bcrypt]
