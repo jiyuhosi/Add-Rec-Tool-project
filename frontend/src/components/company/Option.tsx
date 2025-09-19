@@ -144,8 +144,10 @@ export const Option: React.FC<OptionProps> = ({ form }) => {
                                     <input
                                         type="radio"
                                         value="yes"
-                                        checked={false}
-                                        onChange={() => {}}
+                                        checked={field.value === 'yes'}
+                                        onChange={e =>
+                                            field.onChange(e.target.value)
+                                        }
                                         disabled={true}
                                         className="mr-2 opacity-50 cursor-not-allowed"
                                     />
