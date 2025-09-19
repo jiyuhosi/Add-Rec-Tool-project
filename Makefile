@@ -19,13 +19,13 @@ restart:
 	docker-compose down
 	docker-compose up --build
 
-# Pythonサービスのシェルに入る
-python-bash:
-	docker-compose exec python /bin/bash
+# バックエンドサービスのシェルに入る
+backend-bash:
+	docker-compose exec backend /bin/bash
 
-# Reactサービスのシェルに入る
-react-bash:
-	docker-compose exec react /bin/bash
+# フロントエンドサービスのシェルに入る
+frontend-bash:
+	docker-compose exec frontend /bin/bash
 
 # Keycloakサービスのシェルに入る
 keycloak-bash:
@@ -39,4 +39,4 @@ clean:
 logs:
 	docker-compose logs -f
 
-.PHONY: up upd down stop restart python-bash react-bash keycloak-bash clean logs
+.PHONY: up upd down stop restart backend-bash frontend-bash keycloak-bash clean logs

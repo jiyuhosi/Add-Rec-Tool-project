@@ -1,7 +1,5 @@
 fastapi
-uvicorn
-requests
-pymongo
+uvicorn[standard]
 pydantic
-motor
 python-multipart
+email-validator

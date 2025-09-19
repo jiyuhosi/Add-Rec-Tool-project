@@ -417,10 +417,10 @@ export const CompanyInfo: React.FC<CompanyInfoProps> = ({ form }) => {
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        {Array.from({ length: 11 }, (_, i) => (
+                                        {Array.from({ length: 12 }, (_, i) => (
                                             <SelectItem
                                                 key={i + 1}
-                                                value={`${String(i + 1).padStart(2, '0')}`}
+                                                value={`${i + 1}`}
                                             >
                                                 {i + 1}月
                                             </SelectItem>
