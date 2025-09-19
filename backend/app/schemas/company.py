@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, EmailStr, validator
 from typing import Optional
 from datetime import datetime
-import re
+import regex as re
 
 
 class Location(BaseModel):
@@ -80,6 +80,8 @@ class CompanyCreate(CompanyBase):
 
 
 class CompanyResponse(CompanyBase):
+    # 応答ではパスワードを返さない
+    ownerLoginPassword: Optional[str] = Field(None, exclude=True)
     id: str
     created_at: datetime
     updated_at: datetime

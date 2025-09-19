@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import api_router
+from .database import init_db, close_db
 
 app = FastAPI(
     title="Add-Rec-Tool API",
@@ -19,6 +20,16 @@ app.add_middleware(
 
 # APIルーター登録（企業のみ含む）
 app.include_router(api_router, prefix="/api/v1")
+
+
+@app.on_event("startup")
+async def on_startup():
+    await init_db()
+
+
+@app.on_event("shutdown")
+async def on_shutdown():
+    await close_db()
 
 
 if __name__ == "__main__":
