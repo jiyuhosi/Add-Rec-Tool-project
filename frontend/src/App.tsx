@@ -4,6 +4,7 @@ import Header from './components/Header';
 import HomePage from './pages/Home';
 import CompanyPage from './pages/Company';
 import MemberPage from './pages/Member';
+import GraphQLHello from './pages/GraphQLHello';
 
 const App: React.FC = () => {
     return (
@@ -16,6 +17,7 @@ const App: React.FC = () => {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/register/company" element={<CompanyPage />} />
                     <Route path="/register/member" element={<MemberPage />} />
+                    <Route path="/graphql-hello" element={<GraphQLHello />} />
                 </Routes>
             </main>
         </div>

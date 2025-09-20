@@ -43,10 +43,10 @@ async def get_companies():
 async def create_company(company: CompanyCreate):
     """新しい企業を作成します。"""
     # 重複確認
-    if await CompanyDoc.find_one({"companyCode": company.companyCode}):
-        raise HTTPException(status_code=400, detail="Company code already exists")
-    if await CompanyDoc.find_one({"ownerLoginEmail": company.ownerLoginEmail}):
-        raise HTTPException(status_code=400, detail="Email already registered")
+    # if await CompanyDoc.find_one({"companyCode": company.companyCode}):
+    #     raise HTTPException(status_code=400, detail="Company code already exists")
+    # if await CompanyDoc.find_one({"ownerLoginEmail": company.ownerLoginEmail}):
+    #     raise HTTPException(status_code=400, detail="Email already registered")
 
     # パスワードハッシュ
     hashed = bcrypt.hash(company.ownerLoginPassword)
