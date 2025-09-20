@@ -15,6 +15,12 @@ import {
     Option,
     EmployeeChatOptions,
 } from '@/components/company';
+import { useMutation } from '@apollo/client/react';
+import {
+    CREATE_COMPANY,
+    type CompanyCreateInput,
+    type CreateCompanyResult,
+} from '@/services/company/createCompany.gql';
 
 const CompanyPage: React.FC = () => {
     const form = useForm<CompanyFormData>({
@@ -22,14 +28,58 @@ const CompanyPage: React.FC = () => {
         defaultValues: defaultCompanyFormValues,
     });
 
+    const [createCompany, { loading }] = useMutation<
+        CreateCompanyResult,
+        { input: CompanyCreateInput }
+    >(CREATE_COMPANY);
+
     const onSubmit = async (data: CompanyFormData) => {
+        // Map form values to backend input
+        const contactName = `${data.contactPersonLastName}${data.contactPersonFirstName}`;
+        const contactNameKana = `${data.contactPersonLastNameKana}${data.contactPersonFirstNameKana}`;
+        const fiscalYearEndMonth = String(
+            parseInt(data.fiscalYearEnd, 10)
+        ).padStart(2, '0');
+
+        const input: CompanyCreateInput = {
+            companyName: data.companyName,
+            companyNameKana: data.companyNameKana,
+            companyCode: data.companyCode,
+            contactName,
+            contactNameKana,
+            phoneNumber: data.phoneNumber || undefined,
+            postalCode: data.postalCode,
+            location: {
+                prefecture: data.prefecture,
+                city: data.city,
+                streetAddress: data.address,
+                addressLine: data.buildingName || undefined,
+            },
+            fiscalYearEndMonth,
+            ownerLoginEmail: data.loginEmail,
+            ownerLoginPassword: data.password,
+            appIntegrationEnabled: data.appIntegration === 'yes',
+            safetyConfirmationEnabled: data.safetyConfirmation === 'yes',
+            occupationalDoctorIntegrationEnabled:
+                data.occupationalHealthIntegration === 'no',
+            employeeChatEnabled: data.employeeChatDisplay === 'show',
+        };
+
         try {
-            console.log('Company registration data:', data);
-            // TODO: Submit to API
-            alert('Company registered successfully!');
-        } catch (error) {
+            const res = await createCompany({ variables: { input } });
+            const created = res.data?.createCompany;
+            if (created?.id) {
+                alert('Company registered successfully!');
+                form.reset();
+            } else {
+                throw new Error('Create company failed');
+            }
+        } catch (error: any) {
+            // Surface common backend errors
+            const msg =
+                error?.message || 'Registration failed. Please try again.';
             console.error('Registration failed:', error);
-            alert('Registration failed. Please try again.');
+            alert(msg);
         }
     };
 
@@ -60,10 +110,10 @@ const CompanyPage: React.FC = () => {
                     <div className="text-center pt-6">
                         <Button
                             type="submit"
-                            disabled={form.formState.isSubmitting}
+                            disabled={form.formState.isSubmitting || loading}
                             className="bg-green-600 hover:bg-green-700 text-white px-12 py-3 rounded-full text-lg font-medium shadow-lg transition duration-200 disabled:opacity-50"
                         >
-                            {form.formState.isSubmitting
+                            {form.formState.isSubmitting || loading
                                 ? COMPANY_LABEL.BUTTONS.SUBMITTING
                                 : COMPANY_LABEL.BUTTONS.SUBMIT}
                         </Button>
