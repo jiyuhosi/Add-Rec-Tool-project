@@ -60,17 +60,21 @@ const CompanyPage: React.FC = () => {
             ownerLoginPassword: data.password,
             appIntegrationEnabled: data.appIntegration === 'yes',
             safetyConfirmationEnabled: data.safetyConfirmation === 'yes',
+            // true when user selected "yes"
             occupationalDoctorIntegrationEnabled:
-                data.occupationalHealthIntegration === 'no',
+                data.occupationalHealthIntegration === 'yes',
             employeeChatEnabled: data.employeeChatDisplay === 'show',
         };
 
         try {
             const res = await createCompany({ variables: { input } });
+
             const created = res.data?.createCompany;
-            if (created?.id) {
-                alert('Company registered successfully!');
-                form.reset();
+            // Consider success if mutation returned an object
+            if (created) {
+                alert('企業情報が正常に登録されました');
+                // Reset all fields back to initial defaults
+                form.reset(defaultCompanyFormValues);
             } else {
                 throw new Error('Create company failed');
             }
@@ -78,8 +82,7 @@ const CompanyPage: React.FC = () => {
             // Surface common backend errors
             const msg =
                 error?.message || 'Registration failed. Please try again.';
-            console.error('Registration failed:', error);
-            alert(msg);
+            console.error('Registration failed:', msg);
         }
     };
 
@@ -90,7 +93,11 @@ const CompanyPage: React.FC = () => {
             </h1>
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(onSubmit)}
+                    onSubmit={form.handleSubmit(onSubmit, errors => {
+                        // Show first validation error if submit is invalid
+                        console.log(errors);
+                        alert(String('入力内容を確認してください'));
+                    })}
                     className="space-y-8"
                 >
                     {/* 企業情報セクション */}
@@ -111,7 +118,7 @@ const CompanyPage: React.FC = () => {
                         <Button
                             type="submit"
                             disabled={form.formState.isSubmitting || loading}
-                            className="bg-green-600 hover:bg-green-700 text-white px-12 py-3 rounded-full text-lg font-medium shadow-lg transition duration-200 disabled:opacity-50"
+                            className="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-12 py-3 rounded-full text-lg font-medium shadow-lg transition duration-200 disabled:opacity-50"
                         >
                             {form.formState.isSubmitting || loading
                                 ? COMPANY_LABEL.BUTTONS.SUBMITTING

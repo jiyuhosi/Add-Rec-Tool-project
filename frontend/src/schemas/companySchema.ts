@@ -110,58 +110,7 @@ export const companySchema = z
             required_error: '産業医連携を選択してください',
         }),
 
-        // 産業医情報（条件付き必須）
-        occupationalDoctorCount: z.string().trim().optional(),
-        occupationalDoctors: z
-            .array(
-                z.object({
-                    name: z
-                        .string()
-                        .min(1, '産業医名は必須です')
-                        .regex(
-                            /^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}A-Zー]+$/u,
-                            'カタカナ、漢字、ひらがな、大文字英字、ハイフンのみで入力してください'
-                        ),
-                    nameKana: z
-                        .string()
-                        .trim()
-                        .min(1, '産業医名（カナ）は必須です')
-                        .regex(
-                            /^[\p{Script=Katakana}ー]+$/u,
-                            'カタカナで入力してください'
-                        ),
-                    phone: z
-                        .string()
-                        .trim()
-                        .min(1, '電話番号は必須です')
-                        .regex(/^[0-9]+$/, '数字のみで入力してください'),
-                    responsibleOffice: z
-                        .string()
-                        .trim()
-                        .min(1, '担当事業所は必須です'),
-                    officeCode: z
-                        .string()
-                        .trim()
-                        .min(1, '事業所コードは必須です'),
-                })
-            )
-            .optional(),
-
-        // ログイン情報（ドクター）
-        doctorLoginEmail: z
-            .string()
-            .trim()
-            .min(1, 'ログインIDは必須です')
-            .email('有効なメールアドレスを入力してください'),
-        doctorPassword: z
-            .string()
-            .trim()
-            .min(6, 'パスワードは6文字以上で入力してください')
-            .max(12, 'パスワードは12文字以内で入力してください')
-            .regex(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[!-~]{6,12}$/,
-                '半角英数字（大文字・小文字・数字を含む）で6〜12文字入力してください。記号は任意です。'
-            ),
+        // 産業医情報（現在は未使用のため削除）
 
         // オプション選択（ドクター）
         employeeChatDisplay: z.enum(['show', 'hide'], {
@@ -203,39 +152,7 @@ export const companySchema = z
             path: ['employeeChatDisplay'],
         }
     )
-    .refine(
-        data => {
-            // 産業医連携が'yes'の場合、occupationalDoctorCountは必須
-            if (
-                data.occupationalHealthIntegration === 'yes' &&
-                !data.occupationalDoctorCount
-            ) {
-                return false;
-            }
-            return true;
-        },
-        {
-            message: '産業医連携を選択した場合、産業医数は必須です',
-            path: ['occupationalDoctorCount'],
-        }
-    )
-    .refine(
-        data => {
-            // 産業医連携が'yes'の場合、occupationalDoctorsは必須かつ空でない配列
-            if (
-                data.occupationalHealthIntegration === 'yes' &&
-                (!data.occupationalDoctors ||
-                    data.occupationalDoctors.length === 0)
-            ) {
-                return false;
-            }
-            return true;
-        },
-        {
-            message: '産業医連携を選択した場合、産業医情報は必須です',
-            path: ['occupationalDoctors'],
-        }
-    )
+    // 産業医情報の検証は現在未使用
     .refine(
         data => {
             // 年度開始月と終了月の関係を検証
@@ -277,9 +194,5 @@ export const defaultCompanyFormValues: CompanyFormData = {
     appIntegration: 'no',
     safetyConfirmation: 'no',
     occupationalHealthIntegration: 'no',
-    occupationalDoctorCount: '',
-    occupationalDoctors: [],
-    doctorLoginEmail: '',
-    doctorPassword: '',
     employeeChatDisplay: 'hide',
 };
