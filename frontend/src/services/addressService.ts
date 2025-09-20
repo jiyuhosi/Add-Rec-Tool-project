@@ -40,8 +40,11 @@ export const autoFillAddress = async (
         if (data.status === 200 && data.results && data.results.length > 0) {
             const addressData = data.results[0];
             form.setValue('prefecture', addressData.prefcode); // e.g., "13" for Tokyo
-            form.setValue('city', addressData.address2); // City (e.g., 港区)
-            form.setValue('address', addressData.address3); // Street address
+            form.setValue(
+                'city',
+                `${addressData.address2} ${addressData.address3}`
+            ); // City (e.g., 港区)
+
             form.clearErrors('postalCode');
         } else {
             form.setError('postalCode', {
