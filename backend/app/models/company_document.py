@@ -31,7 +31,8 @@ class Company(Document):
     location: LocationModel = Field(..., description="住所情報")
 
     # Settings
-    months: str = Field(..., description="年度設定 (例: 02-03)")
+    # Default provided for backward compatibility with legacy documents missing this field
+    months: str = Field("02-03", description="年度設定 (例: 02-03)")
     appIntegrationEnabled: bool = Field(..., description="アプリ連携")
     safetyConfirmationEnabled: bool = Field(..., description="安否確認")
     occupationalDoctorIntegrationEnabled: bool = Field(..., description="産業医連携")

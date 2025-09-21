@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-회사 API 테스트 스크립트
+会社 API テストスクリプト
 """
 import requests
 import json
 
-# API 베이스 URL
+# API ベース URL
 BASE_URL = "http://localhost:8000"
 
-# 테스트 데이터
+# テストデータ
 test_company_data = {
     "companyInputs": [
         {
@@ -49,11 +49,11 @@ test_company_data = {
 }
 
 def test_api():
-    """API 테스트 실행"""
+    """API テスト実行"""
     print("=== 회사 API 테스트 시작 ===")
     
-    # 1. 회사 추가 테스트
-    print("\n1. 회사 추가 테스트")
+    # 1. 会社追加テスト
+    print("\n1. 会社追加テスト")
     response = requests.post(
         f"{BASE_URL}/companies",
         json=test_company_data,
@@ -61,40 +61,40 @@ def test_api():
     )
     
     if response.status_code == 200:
-        print("✅ 회사 추가 성공")
+        print("✅ 会社追加成功")
         print(json.dumps(response.json(), indent=2, ensure_ascii=False))
     else:
-        print("❌ 회사 추가 실패")
+        print("❌ 会社追加失敗")
         print(f"Status Code: {response.status_code}")
         print(f"Response: {response.text}")
         return
     
-    # 2. 회사 목록 조회 테스트
-    print("\n2. 회사 목록 조회 테스트")
+    # 2. 会社一覧取得テスト
+    print("\n2. 会社一覧取得テスト")
     response = requests.get(f"{BASE_URL}/companies")
     
     if response.status_code == 200:
-        print("✅ 회사 목록 조회 성공")
+        print("✅ 会社一覧取得成功")
         companies = response.json()
         print(f"총 {len(companies['companies'])}개의 회사")
     else:
-        print("❌ 회사 목록 조회 실패")
+        print("❌ 会社一覧取得失敗")
         print(f"Status Code: {response.status_code}")
     
-    # 3. 특정 회사 조회 테스트
-    print("\n3. 특정 회사 조회 테스트")
+    # 3. 特定会社取得テスト
+    print("\n3. 特定会社取得テスト")
     company_code = "TEST_COMPANY_001"
     response = requests.get(f"{BASE_URL}/companies/{company_code}")
     
     if response.status_code == 200:
-        print("✅ 특정 회사 조회 성공")
+        print("✅ 特定会社取得成功")
         print(json.dumps(response.json(), indent=2, ensure_ascii=False))
     else:
-        print("❌ 특정 회사 조회 실패")
+        print("❌ 特定会社取得失敗")
         print(f"Status Code: {response.status_code}")
     
-    # 4. 회사 정보 업데이트 테스트
-    print("\n4. 회사 정보 업데이트 테스트")
+    # 4. 会社情報更新テスト
+    print("\n4. 会社情報更新テスト")
     update_data = {
         "contactPersonFamilyName": "鈴木",
         "contactPersonMail": "suzuki@example.com"
@@ -107,10 +107,10 @@ def test_api():
     )
     
     if response.status_code == 200:
-        print("✅ 회사 정보 업데이트 성공")
+        print("✅ 会社情報更新成功")
         print(json.dumps(response.json(), indent=2, ensure_ascii=False))
     else:
-        print("❌ 회사 정보 업데이트 실패")
+        print("❌ 会社情報更新失敗")
         print(f"Status Code: {response.status_code}")
     
     print("\n=== 테스트 완료 ===")

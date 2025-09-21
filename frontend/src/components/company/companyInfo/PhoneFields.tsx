@@ -23,7 +23,6 @@ export const PhoneFields: React.FC<Props> = ({ form }) => {
                     <FormItem>
                         <FormLabel className="text-sm font-medium text-gray-700">
                             {COMPANY_LABEL.FIELDS.PHONE_NUMBER}
-                            <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
                             <Input
