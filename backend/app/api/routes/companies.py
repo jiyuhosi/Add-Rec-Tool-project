@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from pydantic import ValidationError
 from typing import List
 from datetime import datetime
 from passlib.hash import bcrypt
@@ -37,7 +38,14 @@ def _to_response_model(doc: CompanyDoc) -> CompanyResponse:
 async def get_companies():
     """すべての企業を取得します。"""
     docs = await CompanyDoc.find_all().to_list()
-    return [_to_response_model(d) for d in docs]
+    result: List[CompanyResponse] = []
+    for d in docs:
+        try:
+            result.append(_to_response_model(d))
+        except ValidationError:
+            # Skip legacy/malformed documents that don't satisfy current API schema
+            continue
+    return result
 
 
 @router.post("/", response_model=CompanyResponse)

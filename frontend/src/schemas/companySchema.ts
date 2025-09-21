@@ -9,6 +9,7 @@ export const companySchema = z
             .string()
             .trim()
             .min(1, '企業名は必須です')
+            .max(255, '企業名は255文字以内で入力してください')
             .regex(
                 /^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー]+$/u,
                 'カタカナ、漢字、ひらがなで入力してください'
@@ -17,11 +18,13 @@ export const companySchema = z
             .string()
             .trim()
             .min(1, '企業名（カナ）は必須です')
+            .max(255, '企業名（カナ）は255文字以内で入力してください')
             .regex(/^[\p{Script=Katakana}ー]+$/u, 'カタカナで入力してください'),
         companyCode: z
             .string()
             .trim()
             .min(1, '企業コードは必須です')
+            .max(255, '企業コードは255文字以内で入力してください')
             .regex(
                 /^[A-Z0-9-]+$/,
                 '大文字英字、数字、ハイフンで入力してください'
@@ -30,6 +33,7 @@ export const companySchema = z
             .string()
             .trim()
             .min(1, '担当者名（姓）は必須です')
+            .max(255, '担当者名（姓）は255文字以内で入力してください')
             .regex(
                 /^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー]+$/u,
                 'カタカナ、漢字、ひらがなで入力してください'
@@ -38,6 +42,7 @@ export const companySchema = z
             .string()
             .trim()
             .min(1, '担当者名（名）は必須です')
+            .max(255, '担当者名（名）は255文字以内で入力してください')
             .regex(
                 /^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}ー]+$/u,
                 'カタカナ、漢字、ひらがなで入力してください'
@@ -46,17 +51,20 @@ export const companySchema = z
             .string()
             .trim()
             .min(1, '担当者名（セイ）は必須です')
+            .max(255, '担当者名（セイ）は255文字以内で入力してください')
             .regex(/^[\p{Script=Katakana}ー]+$/u, 'カタカナで入力してください'),
         contactPersonFirstNameKana: z
             .string()
             .trim()
             .min(1, '担当者名（メイ）は必須です')
+            .max(255, '担当者名（メイ）は255文字以内で入力してください')
             .regex(/^[\p{Script=Katakana}ー]+$/u, 'カタカナで入力してください'),
         phoneNumber: z
             .string()
             .trim()
-            .min(1, '電話番号は必須です')
-            .regex(/^[0-9]+$/, '数字のみで入力してください'),
+            .max(255, '電話番号は15文字以内で入力してください')
+            .regex(/^[0-9]+$/, '数字のみで入力してください')
+            .optional(),
         postalCode: z
             .string()
             .trim()
@@ -88,15 +96,24 @@ export const companySchema = z
             .string()
             .trim()
             .min(1, 'ログインIDは必須です')
+            .max(255, 'ログインIDは255文字以内で入力してください')
             .email('有効なメールアドレスを入力してください'),
         password: z
             .string()
-            .trim()
             .min(6, 'パスワードは6文字以上で入力してください')
             .max(12, 'パスワードは12文字以内で入力してください')
-            .regex(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[!-~]{6,12}$/,
-                '半角英数字（大文字・小文字・数字を含む）で6〜12文字入力してください。記号は任意です。'
+            .regex(/^[!-~]+$/, '半角文字で入力してください')
+            .refine(
+                val => /[A-Z]/.test(val),
+                'パスワードには少なくとも1つの大文字（A-Z）を含めてください。'
+            )
+            .refine(
+                val => /[a-z]/.test(val),
+                'パスワードには少なくとも1つの小文字（a-z）を含めてください。'
+            )
+            .refine(
+                val => /[0-9]/.test(val),
+                'パスワードには少なくとも1つの数字（0-9）を含めてください。'
             ),
 
         // オプション選択
