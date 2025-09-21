@@ -120,35 +120,27 @@ export const companySchema = z
     .refine(
         data => {
             // アプリ連携ありの場合、安否確認は必須
-            if (
-                data.appIntegration === 'yes' &&
-                data.safetyConfirmation !== 'yes'
-            ) {
+            if (data.appIntegration === 'yes' && !data.employeeChatDisplay) {
                 return false;
             }
             return true;
         },
         {
-            message:
-                'アプリ連携を選択した場合、安否確認を「はい」にしてください',
+            message: 'アプリ連携選択した場合、安否確認は必須です',
             path: ['safetyConfirmation'],
         }
     )
     .refine(
         data => {
             // アプリ連携ありかつ産業医連携ありの場合、従業員とのチャット設定は必須
-            if (
-                data.appIntegration === 'yes' &&
-                data.occupationalHealthIntegration === 'yes' &&
-                !data.employeeChatDisplay
-            ) {
+            if (data.appIntegration === 'yes' && !data.employeeChatDisplay) {
                 return false;
             }
             return true;
         },
         {
             message:
-                'アプリ連携および産業医連携を選択した場合、従業員とのチャット表示設定は必須です',
+                'アプリ連携選択した場合、従業員とのチャット表示設定は必須です',
             path: ['employeeChatDisplay'],
         }
     )

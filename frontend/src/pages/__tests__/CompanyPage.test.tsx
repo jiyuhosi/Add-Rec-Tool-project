@@ -145,6 +145,16 @@ vi.mock('@/components/company', () => ({
                 />
             </label>
             <label>
+                FY Start
+                <input
+                    name="fiscalYearStart"
+                    data-testid="fiscalYearStart"
+                    onChange={e =>
+                        form.setValue('fiscalYearStart', e.target.value)
+                    }
+                />
+            </label>
+            <label>
                 FY End
                 <input
                     name="fiscalYearEnd"
@@ -278,6 +288,7 @@ vi.mock('@/components/company', () => ({
 
 // Spy on alert
 const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
 // Pull in the mocked useMutation for configuring resolves per-test
 import { useMutation } from '@apollo/client/react';
@@ -322,6 +333,9 @@ const fillHappyPath = () => {
     fireEvent.change(screen.getByTestId('buildingName'), {
         target: { value: 'ABCビル' },
     });
+    fireEvent.change(screen.getByTestId('fiscalYearStart'), {
+        target: { value: '2' },
+    });
     fireEvent.change(screen.getByTestId('fiscalYearEnd'), {
         target: { value: '3' },
     });
@@ -348,7 +362,6 @@ describe('CompanyPage submit', () => {
                 createCompany: {
                     id: '1',
                     companyCode: 'ABC-123',
-                    ownerLoginEmail: 'owner@example.com',
                 },
             },
         });
@@ -383,7 +396,7 @@ describe('CompanyPage submit', () => {
                 streetAddress: '1―1',
                 addressLine: 'ABCビル',
             },
-            fiscalYearEndMonth: '03',
+            months: '02-03',
             ownerLoginEmail: 'owner@example.com',
             ownerLoginPassword: 'Aa1234',
             appIntegrationEnabled: true,
@@ -394,7 +407,7 @@ describe('CompanyPage submit', () => {
 
         await waitFor(() => {
             expect(alertSpy).toHaveBeenCalledWith(
-                'Company registered successfully!'
+                '企業情報が正常に登録されました'
             );
         });
     });
@@ -413,7 +426,34 @@ describe('CompanyPage submit', () => {
         fireEvent.click(screen.getByRole('button', { name: /送信/ }));
 
         await waitFor(() => {
-            expect(alertSpy).toHaveBeenCalledWith('boom');
+            // No success alert
+            expect(alertSpy).not.toHaveBeenCalled();
+            // Error is logged to console
+            expect(consoleErrorSpy).toHaveBeenCalled();
+            const call = (consoleErrorSpy.mock.calls[0] || [])[1] as string;
+            expect(String(call)).toContain('boom');
+        });
+    });
+
+    it('alerts when company code is duplicated', async () => {
+        const err = new Error('Company code already exists');
+        (err as any).graphQLErrors = [
+            { message: 'Company code already exists' },
+        ];
+        const mutateFn = vi.fn().mockRejectedValue(err);
+        (useMutation as unknown as Mock).mockReturnValue([
+            mutateFn,
+            { loading: false },
+        ]);
+
+        render(<CompanyPage />);
+
+        fillHappyPath();
+
+        fireEvent.click(screen.getByRole('button', { name: /送信/ }));
+
+        await waitFor(() => {
+            expect(alertSpy).toHaveBeenCalledWith('企業コードは既に存在します');
         });
     });
 });

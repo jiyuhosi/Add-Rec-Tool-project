@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { UseFormReturn } from 'react-hook-form';
 import type { CompanyFormData } from '@/schemas/companySchema';
+import { getPrefectureNameByCode } from '@/constants/prefectures';
 
 interface AddressData {
     status: number;
@@ -39,7 +40,12 @@ export const autoFillAddress = async (
 
         if (data.status === 200 && data.results && data.results.length > 0) {
             const addressData = data.results[0];
-            form.setValue('prefecture', addressData.prefcode); // e.g., "13" for Tokyo
+            // zipcloud may return single-digit codes without leading zero; pad to 2 digits
+            const paddedCode = addressData.prefcode.padStart(2, '0');
+            const prefectureName = getPrefectureNameByCode(paddedCode);
+            if (prefectureName) {
+                form.setValue('prefecture', prefectureName); // e.g., "東京都"
+            }
             form.setValue(
                 'city',
                 `${addressData.address2} ${addressData.address3}`

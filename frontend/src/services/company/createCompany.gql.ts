@@ -3,9 +3,7 @@ import { gql } from '@apollo/client';
 export const CREATE_COMPANY = gql`
     mutation CreateCompany($input: CompanyCreateInput!) {
         createCompany(input: $input) {
-            id
             companyCode
-            ownerLoginEmail
         }
     }
 `;
@@ -26,7 +24,7 @@ export type CompanyCreateInput = {
     phoneNumber?: string | null;
     postalCode: string;
     location: LocationInput;
-    fiscalYearEndMonth: string; // "01"~"12"
+    months: string; // "MM-MM" e.g., "02-03"
     ownerLoginEmail: string;
     ownerLoginPassword: string;
     appIntegrationEnabled: boolean;
@@ -39,6 +37,5 @@ export type CreateCompanyResult = {
     createCompany: {
         id: string;
         companyCode: string;
-        ownerLoginEmail: string;
     };
 };

@@ -98,7 +98,7 @@ contactNameKana = `${contactPersonLastNameKana} ${contactPersonFirstNameKana}`
 "streetAddress": "丸の内 1-1",
 "addressLine": "パレスビル"
 },
-"fiscalYearEndMonth": "02-03",
+"months": "02-03",
 "ownerLoginEmail": "taro.yamada@example.com",
 "ownerLoginPassword": "Password123!",
 "appIntegrationEnabled": true,
