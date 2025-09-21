@@ -22,7 +22,7 @@ def sample_payload(code: str | None = None, email: str | None = None):
             "streetAddress": "梅田1-1-1",
             "addressLine": "XXビル 10F",
         },
-        "fiscalYearEndMonth": "02-03",
+        "months": "02-03",
         "ownerLoginEmail": email,
         "ownerLoginPassword": "Abc123!",
         "appIntegrationEnabled": True,

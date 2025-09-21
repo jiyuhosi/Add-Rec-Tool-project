@@ -10,12 +10,6 @@ const HomePage: React.FC = () => {
             >
                 企業管理登録画面
             </Link>
-            <Link
-                to="/register/member"
-                className="text-2xl font-bold  bg-white rounded-lg p-8 text-center border-2"
-            >
-                会員管理登録画面
-            </Link>
         </div>
     );
 };

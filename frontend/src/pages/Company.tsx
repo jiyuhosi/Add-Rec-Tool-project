@@ -21,6 +21,7 @@ import {
     type CompanyCreateInput,
     type CreateCompanyResult,
 } from '@/services/company/createCompany.gql';
+import { mapFormToCompanyCreateInput } from '@/mappers/company/mapFormToInput';
 
 const CompanyPage: React.FC = () => {
     const form = useForm<CompanyFormData>({
@@ -34,37 +35,8 @@ const CompanyPage: React.FC = () => {
     >(CREATE_COMPANY);
 
     const onSubmit = async (data: CompanyFormData) => {
-        // Map form values to backend input
-        const contactName = `${data.contactPersonLastName}${data.contactPersonFirstName}`;
-        const contactNameKana = `${data.contactPersonLastNameKana}${data.contactPersonFirstNameKana}`;
-        const fiscalYearEndMonth = String(
-            parseInt(data.fiscalYearEnd, 10)
-        ).padStart(2, '0');
-
-        const input: CompanyCreateInput = {
-            companyName: data.companyName,
-            companyNameKana: data.companyNameKana,
-            companyCode: data.companyCode,
-            contactName,
-            contactNameKana,
-            phoneNumber: data.phoneNumber || undefined,
-            postalCode: data.postalCode,
-            location: {
-                prefecture: data.prefecture,
-                city: data.city,
-                streetAddress: data.address,
-                addressLine: data.buildingName || undefined,
-            },
-            fiscalYearEndMonth,
-            ownerLoginEmail: data.loginEmail,
-            ownerLoginPassword: data.password,
-            appIntegrationEnabled: data.appIntegration === 'yes',
-            safetyConfirmationEnabled: data.safetyConfirmation === 'yes',
-            // true when user selected "yes"
-            occupationalDoctorIntegrationEnabled:
-                data.occupationalHealthIntegration === 'yes',
-            employeeChatEnabled: data.employeeChatDisplay === 'show',
-        };
+        // Map form values to backend input via helper
+        const input: CompanyCreateInput = mapFormToCompanyCreateInput(data);
 
         try {
             const res = await createCompany({ variables: { input } });
@@ -79,10 +51,20 @@ const CompanyPage: React.FC = () => {
                 throw new Error('Create company failed');
             }
         } catch (error: any) {
-            // Surface common backend errors
-            const msg =
-                error?.message || 'Registration failed. Please try again.';
-            console.error('Registration failed:', msg);
+            // Show specific alert when company code is duplicated
+            const raw = error?.message || '';
+            const gqlMsg = error?.graphQLErrors?.[0]?.message || '';
+            const msg = String(gqlMsg || raw);
+
+            const isDuplicateCompanyCode = /company code already exists/i.test(
+                msg
+            );
+
+            if (isDuplicateCompanyCode) {
+                alert('企業コードは既に存在します');
+            } else {
+                console.error('Registration failed:', msg);
+            }
         }
     };
 

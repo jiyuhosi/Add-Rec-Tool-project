@@ -24,7 +24,7 @@ class Company:
     phoneNumber: Optional[str]
     postalCode: str
     location: Location
-    fiscalYearEndMonth: str
+    months: str
     ownerLoginEmail: str
     appIntegrationEnabled: bool
     safetyConfirmationEnabled: bool
@@ -52,7 +52,7 @@ class CompanyCreateInput:
     phoneNumber: Optional[str] = None
     postalCode: str
     location: LocationInput
-    fiscalYearEndMonth: str
+    months: str
     ownerLoginEmail: str
     ownerLoginPassword: str
     appIntegrationEnabled: bool

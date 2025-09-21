@@ -20,7 +20,7 @@ class CompanyBase(BaseModel):
     phoneNumber: Optional[str] = Field(None, max_length=255, description="電話番号")
     postalCode: str = Field(..., max_length=255, description="郵便番号")
     location: Location = Field(..., description="住所情報")
-    fiscalYearEndMonth: str = Field(..., description="年度設定 (例: 02-03)")
+    months: str = Field(..., description="年度設定 (例: 02-03)")
     ownerLoginEmail: EmailStr = Field(..., description="ログインID")
     ownerLoginPassword: str = Field(..., min_length=6, max_length=12, description="パスワード")
     appIntegrationEnabled: bool = Field(..., description="アプリ連携")
@@ -58,7 +58,7 @@ class CompanyBase(BaseModel):
             raise ValueError('数字のみ使用可能です')
         return v
 
-    @validator('fiscalYearEndMonth')
+    @validator('months')
     def validate_fiscal_year(cls, v):
         if not re.match(r'^[0-9]{2}-[0-9]{2}$', v):
             raise ValueError('MM-MM形式で入力してください (例: 02-03)')

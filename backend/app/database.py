@@ -28,6 +28,16 @@ async def init_db() -> None:
     db = _client[MONGODB_DB]
     await init_beanie(database=db, document_models=[Company])
 
+    # Ensure legacy unique index on ownerLoginEmail is removed if present
+    try:
+        companies_col = db.get_collection("companies")
+        # Drop by index name created previously in model Settings
+        await companies_col.drop_index("idx_owner_email")
+        print("[DB] Dropped legacy unique index: idx_owner_email")
+    except Exception:
+        # Index may not exist; ignore
+        pass
+
 
 async def close_db() -> None:
     global _client

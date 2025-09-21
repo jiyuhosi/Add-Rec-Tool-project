@@ -31,7 +31,7 @@ class Company(Document):
     location: LocationModel = Field(..., description="住所情報")
 
     # Settings
-    fiscalYearEndMonth: str = Field(..., description="年度設定 (例: 02-03)")
+    months: str = Field(..., description="年度設定 (例: 02-03)")
     appIntegrationEnabled: bool = Field(..., description="アプリ連携")
     safetyConfirmationEnabled: bool = Field(..., description="安否確認")
     occupationalDoctorIntegrationEnabled: bool = Field(..., description="産業医連携")
@@ -45,5 +45,4 @@ class Company(Document):
         name = "companies"
         indexes = [
             IndexModel([("companyCode", 1)], name="idx_company_code", unique=True),
-            IndexModel([("ownerLoginEmail", 1)], name="idx_owner_email", unique=True),
         ]
