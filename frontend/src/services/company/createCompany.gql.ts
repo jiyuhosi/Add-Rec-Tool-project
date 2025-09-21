@@ -3,7 +3,6 @@ import { gql } from '@apollo/client';
 export const CREATE_COMPANY = gql`
     mutation CreateCompany($input: CompanyCreateInput!) {
         createCompany(input: $input) {
-            id
             companyCode
         }
     }
