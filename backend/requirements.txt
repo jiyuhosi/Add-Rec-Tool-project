@@ -12,3 +12,5 @@ python-dotenv
 regex
 passlib[bcrypt]
 strawberry-graphql[fastapi]
+httpx
+python-jose[cryptography]

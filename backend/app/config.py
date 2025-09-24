@@ -16,3 +16,9 @@ MONGODB_DB = (
 	or os.getenv("DATABASE_NAME")
 	or "add_rec_tool"
 )
+
+# Keycloak settings
+KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://localhost:8083")
+KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "add-rec-tool")
+KEYCLOAK_CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID", "admin-cli")
+KEYCLOAK_CLIENT_SECRET = os.getenv("KEYCLOAK_CLIENT_SECRET", "")
