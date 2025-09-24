@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import ValidationError
 from typing import List
 from datetime import datetime
@@ -8,6 +8,8 @@ from pymongo.errors import DuplicateKeyError
 
 from app.schemas.company import CompanyCreate, CompanyResponse
 from app.models.company_document import Company as CompanyDoc
+from app.dependencies.auth import get_current_user
+from app.schemas.auth import UserInfo
 
 router = APIRouter()
 
@@ -35,7 +37,7 @@ def _to_response_model(doc: CompanyDoc) -> CompanyResponse:
 
 
 @router.get("/", response_model=List[CompanyResponse])
-async def get_companies():
+async def get_companies(current_user: UserInfo = Depends(get_current_user)):
     """すべての企業を取得します。"""
     docs = await CompanyDoc.find_all().to_list()
     result: List[CompanyResponse] = []
@@ -49,7 +51,10 @@ async def get_companies():
 
 
 @router.post("/", response_model=CompanyResponse)
-async def create_company(company: CompanyCreate):
+async def create_company(
+    company: CompanyCreate,
+    current_user: UserInfo = Depends(get_current_user)
+):
     """新しい企業を作成します。"""
     # 重複確認 (既存ドキュメントの不完全なスキーマによる検証エラーを避けるためcountで確認)
     if await CompanyDoc.find({"companyCode": company.companyCode}).count() > 0:
@@ -87,7 +92,10 @@ async def create_company(company: CompanyCreate):
 
 
 @router.get("/{company_id}", response_model=CompanyResponse)
-async def get_company(company_id: str):
+async def get_company(
+    company_id: str,
+    current_user: UserInfo = Depends(get_current_user)
+):
     """特定の企業を取得します。"""
     try:
         doc = await CompanyDoc.get(PydanticObjectId(company_id))

@@ -25,6 +25,14 @@ Add-Rec-Tool は、FastAPI + MongoDB を用いたバックエンドを中心に�
 以下は Makefile にターゲットが定義されている前提です。未導入の場合は docker compose のコマンドに読み替えてください。
 
 1. .env の準備（必要に応じてルートや backend/.env を設定）
+    - ルートディレクトリにある `.env.sample` をコピーして `.env` にリネームしてください。
+        ```bash
+        cp .env.sample .env
+        ```
+    - backend/.env も同様に `.env.sample` があれば `.env` にコピーしてください。
+        ```bash
+        cp backend/.env.sample backend/.env
+        ```
 2. 起動
 
 ```bash

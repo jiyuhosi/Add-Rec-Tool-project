@@ -96,7 +96,7 @@ contactNameKana = `${contactPersonLastNameKana} ${contactPersonFirstNameKana}`
 "location": {
 "prefecture": "東京都",
 "city": "千代田区",
-"streetAddress": "丸の内 1-1",
+"streetAddress": "2",
 "addressLine": "パレスビル"
 },
 "months": "02-03",
