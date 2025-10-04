@@ -256,7 +256,7 @@ vi.mock('@/components/company', () => ({
             </label>
         </div>
     ),
-    EmployeeChatOptions: ({ form }: any) => (
+    employeeChatOptions: ({ form }: any) => (
         <div>
             <label>
                 Chat Show
