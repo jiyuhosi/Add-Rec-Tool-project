@@ -14,6 +14,7 @@ vi.mock('@hookform/resolvers/zod', () => ({
 }));
 
 console.log('--- IGNORE ---');
+console.log('--- IGNORE ---');
 
 // Mock the GraphQL document export (we only need the type)
 vi.mock('@/services/company/createCompany.gql', () => ({
