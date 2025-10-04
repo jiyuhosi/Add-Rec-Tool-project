@@ -44,9 +44,9 @@ const CompanyPage: React.FC = () => {
             const created = res.data?.createCompany;
             // Consider success if mutation returned an object
             if (created) {
-                alert('企業情報が正常に登録されました'
+                alert('企業情報が正常に登録されました');
                 // Reset all fields back to initial defaults
-                form.reset(defaultCompanyFormValues
+                form.reset(defaultCompanyFormValues);
             } else {
                 throw new Error('Create company failed');
             }
