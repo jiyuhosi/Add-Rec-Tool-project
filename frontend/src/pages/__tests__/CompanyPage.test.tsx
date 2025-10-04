@@ -13,6 +13,8 @@ vi.mock('@hookform/resolvers/zod', () => ({
     zodResolver: () => async (values: any) => ({ values, errors: {} }),
 }));
 
+console.log('--- IGNORE ---');
+
 // Mock the GraphQL document export (we only need the type)
 vi.mock('@/services/company/createCompany.gql', () => ({
     CREATE_COMPANY: {},
