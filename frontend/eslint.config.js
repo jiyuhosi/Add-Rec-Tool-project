@@ -5,15 +5,16 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
+import eslintPluginImport from 'eslint-plugin-import';
 
 export default tseslint.config([
     {
         ignores: [
             'dist',
             'vite.config.js',
-            // '**/*.test.ts',
-            // '**/*.test.tsx',
-            // '**/__tests__/**',
+            '**/*.test.ts',
+            '**/*.test.tsx',
+            '**/__tests__/**',
         ],
     },
     {
@@ -36,6 +37,7 @@ export default tseslint.config([
             react,
             'react-hooks': reactHooks,
             'react-refresh': reactRefresh,
+            import: eslintPluginImport,
         },
         rules: {
             ...reactHooks.configs.recommended.rules,
@@ -48,6 +50,23 @@ export default tseslint.config([
             ],
             'react/react-in-jsx-scope': 'off',
             'react/jsx-uses-react': 'off',
+            // Unused variables and imports
+            'no-unused-vars': 'off', // TypeScript에서는 이 규칙을 끄고 아래 TypeScript 전용 규칙 사용
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    'argsIgnorePattern': '^_',
+                    'varsIgnorePattern': '^_',
+                    'caughtErrorsIgnorePattern': '^_'
+                }
+            ],
+            // Duplicate import protection
+            'no-duplicate-imports': 'error',
+            'import/no-duplicates': 'error',
+            // Duplicate code detection
+            'no-dupe-keys': 'error',
+            'no-dupe-args': 'error',
+            'no-duplicate-case': 'error',
             // Allow usage of 'any' type explicitly
             '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/naming-convention': [
