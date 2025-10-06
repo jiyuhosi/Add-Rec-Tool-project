@@ -1,6 +1,19 @@
 #!/usr/bin/env sh
-cd frontend && npm run lint
-if [ $? -ne 0 ]; then
-  echo "ESLint failed. Commit aborted."
-  exit 1
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Running lint-staged..."
+
+# Execute from repository root; lint-staged config lives in frontend/package.json
+(
+  cd frontend || exit 1
+  npx lint-staged
+)
+
+status=$?
+if [ $status -ne 0 ]; then
+  echo "lint-staged tasks failed (exit code $status). Commit aborted."
+  exit $status
 fi
+
+echo "lint-staged completed successfully."
+exit 0

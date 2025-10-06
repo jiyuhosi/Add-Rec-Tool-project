@@ -169,6 +169,17 @@ make down
 -   環境変数:
     -   ルート .env、backend/.env、frontend/.env.local、bff/.env を用途に応じて設定
 
+## ローカル Lint vs CI Lint
+
+-   ローカル 커밋 훅(Husky + lint-staged): 변경(staged)된 프론트엔드 파일만 `eslint --fix` + `prettier --write` 수행. 빠른 피드백.
+-   CI (GitHub Actions `frontend-lint.yml`): 프론트엔드 전체 소스에 대해 `npx eslint . --max-warnings=0` 실행. 경고도 실패로 처리해 품질 확보.
+-   장점:
+    -   속도: 로컬은 최소 변경만 확인
+    -   신뢰성: CI에서 놓친 규칙/새 파일 전체 스캔
+-   커스터마이즈:
+    -   경고 허용: 워크플로우에서 `--max-warnings=0` 제거
+    -   병렬 잡 추가: 테스트/타입체크 (`npx tsc --noEmit`) 등
+
 ## トラブルシューティング
 
 -   ポート競合: 3000/5173（Frontend）、8080（BFF）、8000（API）、27017（MongoDB）、8083（Keycloak）を使用
