@@ -7,7 +7,15 @@ import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config([
-    { ignores: ['dist', 'vite.config.js'] },
+    {
+        ignores: [
+            'dist',
+            'vite.config.js',
+            // '**/*.test.ts',
+            // '**/*.test.tsx',
+            // '**/__tests__/**',
+        ],
+    },
     {
         files: ['**/*.{ts,tsx}'],
         extends: [
@@ -40,8 +48,20 @@ export default tseslint.config([
             ],
             'react/react-in-jsx-scope': 'off',
             'react/jsx-uses-react': 'off',
+            // Allow usage of 'any' type explicitly
+            '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/naming-convention': [
                 'error',
+                // 외부 API / OAuth 응답 또는 HTTP 헤더 등 snake_case · 하이픈 포함 키 예외 허용
+                // 이 목록의 프로퍼티 이름은 네이밍 규칙 검사에서 제외합니다.
+                {
+                    selector: 'property',
+                    format: null,
+                    filter: {
+                        regex: '^(Content-Type)$',
+                        match: true,
+                    },
+                },
                 {
                     selector: 'variable',
                     format: ['camelCase', 'PascalCase', 'UPPER_CASE'],

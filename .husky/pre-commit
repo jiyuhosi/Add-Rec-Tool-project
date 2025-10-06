@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+cd frontend && npm run lint
+if [ $? -ne 0 ]; then
+  echo "ESLint failed. Commit aborted."
+  exit 1
+fi

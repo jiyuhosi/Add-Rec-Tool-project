@@ -235,11 +235,9 @@ describe('companySchema validation', () => {
         expect(result.success).toBe(true);
 
         // undefined should pass as well
-        const { buildingName, ...rest } = makeValidPayload();
-        result = companySchema.safeParse({
-            ...rest,
-            buildingName: undefined,
-        } as any);
+        const payloadWithoutBuilding = makeValidPayload();
+        delete (payloadWithoutBuilding as any).buildingName; // remove field so it becomes undefined
+        result = companySchema.safeParse(payloadWithoutBuilding as any);
         expect(result.success).toBe(true);
 
         // lowercase latin should fail
