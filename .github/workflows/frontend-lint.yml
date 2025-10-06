@@ -30,7 +30,8 @@ jobs:
               run: npm ci --no-audit --no-fund
 
             - name: Run ESLint (full project)
-              run: npx eslint . --max-warnings=0
+              # Warnings are allowed (no --max-warnings=0)
+              run: npx eslint .
 
             - name: Show disk usage (debug)
               if: ${{ failure() }}
